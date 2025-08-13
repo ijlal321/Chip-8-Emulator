@@ -1,0 +1,13 @@
+{
+  "terminal.integrated.profiles.windows": {
+  "MSYS2 MinGW32": {
+    "path": "C:\\msys64\\usr\\bin\\bash.exe",
+    "args": ["--login", "-i"],
+    "env": {
+      "MSYSTEM": "MINGW32", // using 32 bit version
+      "CHERE_INVOKING": "1"
+      }
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "MSYS2 MinGW32"  // using 32 bit version
+}
