@@ -10,4 +10,7 @@
 #define WINDOW_MULTIPLIER 10
 
 
+#define CHIP8_TOTAL_DATA_REGISTERS 16
+
+
 #endif
