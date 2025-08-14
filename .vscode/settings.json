@@ -11,6 +11,7 @@
   },
   "terminal.integrated.defaultProfile.windows": "MSYS2 MinGW32",
   "files.associations": {
-    "config.h": "c"
+    "config.h": "c",
+    "chip8memory.h": "c"
   } // using 32 bit version
 }
