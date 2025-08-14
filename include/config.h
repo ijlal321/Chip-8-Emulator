@@ -1,0 +1,13 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#include "config.h"
+
+#define EMULATOR_WINDOW_TITLE "Chip 8 Window"
+#define CHIP8_MEMORY_SIZE 4096
+#define CHIP8_WIDTH 64
+#define CHIP8_HEIGHT 32
+#define WINDOW_MULTIPLIER 10
+
+
+#endif

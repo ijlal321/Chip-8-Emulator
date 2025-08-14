@@ -9,5 +9,8 @@
       }
     }
   },
-  "terminal.integrated.defaultProfile.windows": "MSYS2 MinGW32"  // using 32 bit version
+  "terminal.integrated.defaultProfile.windows": "MSYS2 MinGW32",
+  "files.associations": {
+    "config.h": "c"
+  } // using 32 bit version
 }
