@@ -17,6 +17,9 @@
     "chip8.h": "c",
     "chip8keyboard.h": "c",
     "stdbool.h": "c",
-    "sdl.h": "c"
+    "sdl.h": "c",
+    "chip8screen.h": "c",
+    "assert.h": "c",
+    "chip8registers.h": "c"
   } // using 32 bit version
 }

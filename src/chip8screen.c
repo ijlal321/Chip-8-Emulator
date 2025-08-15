@@ -1,0 +1,35 @@
+#include "chip8screen.h"
+#include <assert.h>
+
+static void chip8_screen_check_bounds(int x, int y){
+    assert(x >= 0 && x < CHIP8_WIDTH);
+    assert(y >= 0 && y < CHIP8_HEIGHT);
+}
+void chip8_screen_set(struct chip8_screen* screen, int x, int y){
+    chip8_screen_check_bounds(x,y);
+    screen->pixels[y][x] = true;
+}
+bool chip8_screen_is_set(struct chip8_screen* screen, int x, int y){
+    chip8_screen_check_bounds(x,y);
+    return screen->pixels[y][x];
+}
+
+bool chip8_screen_draw_sprite(struct chip8_screen* screen, int x, int y, const char * sprite, int num){
+    bool pixel_collision = false;
+
+    for(int ly = 0; ly < num; ly++){
+        char c = sprite[ly];
+        for (int lx = 0; lx < 8; lx++){ // iterating 8 bits of a byte
+            if ((c & (0b10000000 >> lx)) == 0){  // iterating bit by bit in c byte.
+                continue;
+            }
+            if (screen->pixels[(ly + y) % CHIP8_HEIGHT][(lx + x) % CHIP8_WIDTH]){
+                pixel_collision = true;
+            }
+            screen->pixels[(ly + y) % CHIP8_HEIGHT][(lx + x) % CHIP8_WIDTH] ^= true;  /* taking xor bcz if pixel already on, then we remove it. 
+            Dont ask me. Just how chip8 was designed.*/
+        }
+    }
+
+    return pixel_collision;
+}
