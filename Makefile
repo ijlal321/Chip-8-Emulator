@@ -1,7 +1,7 @@
 INCLUDE = -I ./include
 FLAGS = -g
 
-OBJECTS=./build/chip8memory.o ./build/chip8stack.o
+OBJECTS=./build/chip8memory.o ./build/chip8stack.o ./build/chip8keyboard.o
 all: ${OBJECTS}
 	gcc ${FLAGS} ${INCLUDE}  ./src/main.c ${OBJECTS} -L ./lib -lmingw32 -lSDL2main -lSDL2 -o ./bin/main
 
@@ -11,8 +11,11 @@ all: ${OBJECTS}
 ./build/chip8stack.o:src/chip8stack.c
 	gcc ${FLAGS} ${INCLUDE}  ./src/chip8stack.c -c -o ./build/chip8stack.o
 
+./build/chip8keyboard.o:src/chip8keyboard.c
+	gcc ${FLAGS} ${INCLUDE}  ./src/chip8keyboard.c -c -o ./build/chip8keyboard.o
+
 clean:
 	rm -f ./build/*
 
 run: all
-	./bin/main.exe
+	./bin/main
