@@ -16,4 +16,10 @@
 
 #define CHIP8_TOTAL_KEYS 16
 
+#define CHIP8_CHARACTER_SET_LOAD_ADDRESS 0x00  /* the character set data starts from 0 in memory (at bottom, if need visual). 
+Also its on memory, not on stack. Remember these are diff in chip8. Said its better for game dev at that time. 
+Stack used for handling subroutine only. its an array of size 16. Meaning max 16 nested subroutines we can go.
+mem is used for all else. Program data etc.
+*/
+
 #endif
