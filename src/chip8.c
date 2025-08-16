@@ -48,7 +48,7 @@ void chip8_exec_extended_eight(struct chip8 *chip8, unsigned short opcode){
     switch (last_four_bits){
         // 8xy0
         case (0x00):
-            chip8->registers.V[x] = chip8->registers.V[x];
+            chip8->registers.V[x] = chip8->registers.V[y];
         break;
 
         // 8xy1 - Vx = Vx | Vy
@@ -57,7 +57,7 @@ void chip8_exec_extended_eight(struct chip8 *chip8, unsigned short opcode){
         break;
 
         case (0x02):
-            chip8->registers.V[x] = chip8->registers.V[x] && chip8->registers.V[y]; 
+            chip8->registers.V[x] = chip8->registers.V[x] & chip8->registers.V[y]; 
         break;
 
         case (0x03):
