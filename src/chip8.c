@@ -33,10 +33,29 @@ void chip8_load(struct chip8* chip8, const char * buffer, int size){
     assert(size + CHIP8_PROGRAM_LOAD_ADDRESS < CHIP8_MEMORY_SIZE);
     memcpy(&chip8->memory.memory[CHIP8_PROGRAM_LOAD_ADDRESS], buffer, size);
 }
+
+void chip8_exec_extended(struct chip8* chip8, unsigned short opcode){
+    unsigned short nnn = opcode & 0x0fff;
+    switch (opcode & 0xf000){
+        // jmp addr, 1nnn jump to nnn's
+        case 0x1000:
+            chip8->registers.PC = nnn;
+        break;
+
+    }
+}
+
 void chip8_exec(struct chip8* chip8, unsigned short opcode){
     switch (opcode){
         case 0x00E0:
             chip8_clear_screen(&chip8->screen);
         break;
+    
+        case 0x00EE:
+            chip8->registers.PC = chip8_stack_pop(chip8);
+        break;
+
+        default:
+            chip8_exec_extended(chip8, opcode);
     }
 } 

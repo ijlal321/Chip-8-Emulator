@@ -35,6 +35,10 @@ int main(int argc, char *argv[]){
 
     free(buf);  // copied to chip8 memory in chip8_load() - no longer needed.
 
+    chip8_exec(&chip8, 0x1111);
+    printf("Program counter at 0x%X \n", chip8.registers.PC);
+    getchar();
+
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window * window = SDL_CreateWindow(
         EMULATOR_WINDOW_TITLE,  
