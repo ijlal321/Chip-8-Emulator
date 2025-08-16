@@ -1,8 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "config.h"
-
 #define EMULATOR_WINDOW_TITLE "Chip 8 Window"
 #define CHIP8_MEMORY_SIZE 4096
 // In memory, program data can be loaded after this position. (first 0x200 are for characterset, remember).
@@ -24,4 +22,5 @@ Stack used for handling subroutine only. its an array of size 16. Meaning max 16
 mem is used for all else. Program data etc.
 */
 
+#define CHIP8_DEFAULT_SPRITE_SIZE 5
 #endif

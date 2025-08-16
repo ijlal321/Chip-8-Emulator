@@ -23,23 +23,16 @@ int main(int argc, char *argv[]){
 
     char * buf = calloc(1, size);   // !Dont forget to free! 
     int res = fread(buf, size, 1, f);
-    if (argc < 2){
+    if (res != 1){
         printf("Failed to read file\n");
         return -1;
     }
 
     struct chip8 chip8;
     chip8_init(&chip8);
-    chip8.registers.PC = CHIP8_PROGRAM_LOAD_ADDRESS;
     chip8_load(&chip8, buf, size);
-
-    free(buf);  // copied to chip8 memory in chip8_load() - no longer needed.
-
-    chip8.registers.PC = 0;
-    chip8.registers.V[0] = 0x00;
-    chip8_exec(&chip8, 0x5120);
-    // printf("Program counter at 0x%02x \n", chip8.registers.PC);
-    getchar();
+    chip8_keyboard_set_map(&chip8.keyboard, keyboard_map);
+    // free(buf);  // copied to chip8 memory in chip8_load() - no longer needed.
 
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window * window = SDL_CreateWindow(
@@ -52,13 +45,10 @@ int main(int argc, char *argv[]){
     // create renderer. One who wrote everything to window (only when SDL_RenderPresent is called)
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_TEXTUREACCESS_TARGET);
     
-    SDL_Event event;
     
-    chip8_screen_draw_sprite(&chip8.screen, 20, 20, &chip8.memory.memory[5], 5);
-    chip8_exec(&chip8, 0x00E0);
-
     while(1){
-    
+        
+        SDL_Event event;
 
         while(SDL_PollEvent(&event)){
             switch(event.type){
@@ -69,7 +59,7 @@ int main(int argc, char *argv[]){
                 case SDL_KEYDOWN:
                     {
                         char key = event.key.keysym.sym;
-                        int vkey = chip8_keyboard_map(keyboard_map, key);
+                        int vkey = chip8_keyboard_map(&chip8.keyboard, key);
                         if (vkey != -1){
                             chip8_keyboard_down(&chip8.keyboard, vkey);
                         }
@@ -79,7 +69,7 @@ int main(int argc, char *argv[]){
                 case SDL_KEYUP:
                     {
                         char key = event.key.keysym.sym;
-                        int vkey = chip8_keyboard_map(keyboard_map, key);
+                        int vkey = chip8_keyboard_map(&chip8.keyboard, key);
                         if (vkey != -1){
                             chip8_keyboard_up(&chip8.keyboard, vkey);
                         }
@@ -109,26 +99,25 @@ int main(int argc, char *argv[]){
         SDL_RenderPresent(renderer);    // draw on screen
 
         // delay timer
-        if (chip8.registers.delay_timer > 0){
-            Sleep(100);
-            printf("delayed...\n");
-            chip8.registers.delay_timer -= 1;
+        SDL_RenderPresent(renderer);
+        if (chip8.registers.delay_timer > 0)
+        {
+            Sleep(1);
+            chip8.registers.delay_timer -=1;
         }
 
-        // sound timer
-        if (chip8.registers.sound_timer > 0){
-            
-            printf("Beeped...\n");
+        if (chip8.registers.sound_timer > 0)
+        {
+            Beep(15000, 10 * chip8.registers.sound_timer);
             chip8.registers.sound_timer = 0;
         }
 
         unsigned short opcode = chip8_memory_get_short(&chip8.memory, chip8.registers.PC);
         chip8.registers.PC += 2; // program counter always incremented before executing. bcz it contains instriction x+1 if x is beign executed.
         chip8_exec(&chip8, opcode);
-        printf("Opcode is: %x\n", opcode);
+        // printf("Opcode is: %x\n", opcode);
     }
     
-    getchar();
 out:
     SDL_DestroyWindow(window);
     return 0;
