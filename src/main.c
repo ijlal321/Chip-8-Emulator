@@ -35,8 +35,10 @@ int main(int argc, char *argv[]){
 
     free(buf);  // copied to chip8 memory in chip8_load() - no longer needed.
 
-    chip8_exec(&chip8, 0x1111);
-    printf("Program counter at 0x%X \n", chip8.registers.PC);
+    chip8.registers.PC = 0;
+    chip8.registers.V[0] = 0x00;
+    chip8_exec(&chip8, 0x5120);
+    // printf("Program counter at 0x%02x \n", chip8.registers.PC);
     getchar();
 
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -121,8 +123,8 @@ int main(int argc, char *argv[]){
         }
 
         unsigned short opcode = chip8_memory_get_short(&chip8.memory, chip8.registers.PC);
+        chip8.registers.PC += 2; // program counter always incremented before executing. bcz it contains instriction x+1 if x is beign executed.
         chip8_exec(&chip8, opcode);
-        chip8.registers.PC += 2;
         printf("Opcode is: %x\n", opcode);
     }
     
