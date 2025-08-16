@@ -48,8 +48,9 @@ int main(int argc, char *argv[]){
     
     SDL_Event event;
     
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // change (brush color) to black
-    SDL_RenderClear(renderer);  // paint whole screen black (clear screen per frame)
+    chip8_screen_draw_sprite(&chip8.screen, 20, 20, &chip8.memory.memory[5], 5);
+    chip8_exec(&chip8, 0x00E0);
+
     while(1){
     
 
@@ -75,12 +76,6 @@ int main(int argc, char *argv[]){
                         int vkey = chip8_keyboard_map(keyboard_map, key);
                         if (vkey != -1){
                             chip8_keyboard_up(&chip8.keyboard, vkey);
-                            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // change (brush color) to black
-                            SDL_RenderClear(renderer); 
-                            memset(&chip8.screen, 0, sizeof(chip8.screen));
-                            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // change (brush color) to black
-                            chip8_screen_draw_sprite(&chip8.screen, 20, 20, &chip8.memory.memory[vkey*5], 5);
-                            printf("printed\n");
                         }
                     }
                 break;
@@ -88,10 +83,10 @@ int main(int argc, char *argv[]){
             } ;
         } 
     
-        // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // change (brush color) to black
-        // SDL_RenderClear(renderer);  // paint whole screen black (clear screen per frame)
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // change (brush color) to black
+        SDL_RenderClear(renderer);  // paint whole screen black (clear screen per frame)
         
-        // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // change color to white
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // change color to white
         
         for (int x = 0; x < CHIP8_WIDTH; x++){
             for (int y = 0; y < CHIP8_HEIGHT; y++){
@@ -99,8 +94,8 @@ int main(int argc, char *argv[]){
                     SDL_Rect r;
                     r.x = x * WINDOW_MULTIPLIER;
                     r.y = y * WINDOW_MULTIPLIER;
-                    r.w = 10;
-                    r.h = 10;
+                    r.w = WINDOW_MULTIPLIER;
+                    r.h = WINDOW_MULTIPLIER;
                     SDL_RenderFillRect(renderer, &r); // make a rectangle
                 }
             }
