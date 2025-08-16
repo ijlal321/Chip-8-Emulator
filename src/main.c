@@ -10,11 +10,31 @@ const char keyboard_map[CHIP8_TOTAL_KEYS] = {
 };
 
 int main(int argc, char *argv[]){
+    if (argc < 2){
+        printf("You must provide a File to Load\n");
+        return -1;
+    }
+    const char * filename = argv[1];
+    FILE* f = fopen(filename, "rb");  // open in read mode.
+
+    fseek(f,0, SEEK_END);  // moves file pointer to end of file
+    long size = ftell(f);   // get cur file position -> size of file
+    fseek(f,0, SEEK_SET);   // moves file pointer back to start of file
+
+    char * buf = calloc(1, size);   // !Dont forget to free! 
+    int res = fread(buf, size, 1, f);
+    if (argc < 2){
+        printf("Failed to read file\n");
+        return -1;
+    }
 
     struct chip8 chip8;
     chip8_init(&chip8);
-    // chip8_screen_draw_sprite(&chip8.screen, 20, 20, &chip8.memory.memory[0x01] , 5);
-    chip8.registers.delay_timer = 20;
+    chip8.registers.PC = CHIP8_PROGRAM_LOAD_ADDRESS;
+    chip8_load(&chip8, buf, size);
+
+    free(buf);  // copied to chip8 memory in chip8_load() - no longer needed.
+
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window * window = SDL_CreateWindow(
         EMULATOR_WINDOW_TITLE,  
@@ -100,6 +120,11 @@ int main(int argc, char *argv[]){
             printf("Beeped...\n");
             chip8.registers.sound_timer = 0;
         }
+
+        unsigned short opcode = chip8_memory_get_short(&chip8.memory, chip8.registers.PC);
+        chip8_exec(&chip8, opcode);
+        chip8.registers.PC += 2;
+        printf("Opcode is: %x\n", opcode);
     }
     
     getchar();

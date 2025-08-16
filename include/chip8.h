@@ -17,6 +17,8 @@ struct chip8{
 };
 
 void chip8_init(struct chip8* chip8);
+void chip8_load(struct chip8* chip8, const char * buffer, int size);  // load the program into memory.
+void chip8_exec(struct chip8* chip8, unsigned short opcode);    // perform a cpu operation
 
 
 #endif

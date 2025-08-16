@@ -24,4 +24,4 @@ clean:
 	rm -f ./build/*
 
 run: all
-	./bin/main
+	./bin/main invaders

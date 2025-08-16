@@ -5,6 +5,8 @@
 
 #define EMULATOR_WINDOW_TITLE "Chip 8 Window"
 #define CHIP8_MEMORY_SIZE 4096
+// In memory, program data can be loaded after this position. (first 0x200 are for characterset, remember).
+#define CHIP8_PROGRAM_LOAD_ADDRESS 0x200
 #define CHIP8_WIDTH 64
 #define CHIP8_HEIGHT 32
 #define WINDOW_MULTIPLIER 10
